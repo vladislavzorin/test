@@ -9,19 +9,18 @@ import com.zorin.test.network.model.Element
 import com.zorin.test.network.model.Response
 import com.zorin.test.repo.MainRepository
 import com.zorin.test.views.MainView
-import java.util.concurrent.TimeUnit
+
 
 @InjectViewState
 class MainPresenter(var mainRepository: MainRepository,var adapter:MainAdapter): MvpPresenter<MainView>() {
 
     var listElements:MutableList<Element> = ArrayList()
 
-    fun login(){
+    fun requestToServer(){
         if (adapter.itemCount == 0){
             mainRepository.request()
                 .doOnSubscribe{viewState.startLoading()}
                 .doOnTerminate{viewState.stopLoading()}
-                .retryWhen{ob -> ob.take(3).delay(15, TimeUnit.SECONDS)}
                 .subscribe({value -> processingResults(value)},{processingError()})
         }
     }

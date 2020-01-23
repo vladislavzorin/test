@@ -32,7 +32,6 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         return MainPresenter(mainRepository,adapter)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         App.plusLoginComponent()
         App.getComponent().inject(this)
@@ -42,7 +41,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
         initRecyclerView()
 
-        mainPresenter.login()
+        mainPresenter.requestToServer()
     }
 
     override fun showError(msg: String) {

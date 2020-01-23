@@ -1,6 +1,5 @@
 package com.zorin.test.di.modules
 
-import com.zorin.test.adapters.MainAdapter
 import com.zorin.test.di.scope.MainScope
 import com.zorin.test.network.AppApi
 import com.zorin.test.repo.MainRepository
