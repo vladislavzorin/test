@@ -50,12 +50,10 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     override fun startLoading() {
         swipe_refresh_layout.isRefreshing = true
-        swipe_refresh_layout.isEnabled = true
     }
 
     override fun stopLoading() {
         swipe_refresh_layout.isRefreshing = false
-        swipe_refresh_layout.isEnabled = false
     }
 
     private fun initRecyclerView(){
@@ -67,7 +65,10 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
         elements_list.adapter = adapter
 
-        swipe_refresh_layout.isEnabled = false
+        swipe_refresh_layout.setOnRefreshListener {
+            mainPresenter.updateQuery()
+        }
+
     }
 
     override fun onDestroy() {

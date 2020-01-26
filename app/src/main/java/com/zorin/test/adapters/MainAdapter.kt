@@ -19,11 +19,15 @@ const val ITEM_SELECTOR = 2
 
 class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var list:List<Element> = ArrayList()
+    private var list:MutableList<Element> = ArrayList()
 
-    fun setData(list:List<Element>){
+    fun setData(list:MutableList<Element>){
         this.list = list
         notifyDataSetChanged()
+    }
+
+    fun deleteData(){
+        list.removeAll(list)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -38,7 +42,7 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                                 PictureViewHolder(view)
                             }
 
-            else ->         {
+            else ->{
                                 val view = LayoutInflater.from(parent.context).inflate(R.layout.item_selector, parent, false)
                                 SelectorViewHolder(view)
                             }
@@ -59,14 +63,11 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(list[position].data.text.isNullOrEmpty()){
-            ITEM_SELECTOR
-        }else{
-            if(list[position].data.url.isNullOrEmpty()){
-                ITEM_TEXT
-            } else {
-                ITEM_PICTURE
-            }
+        return when (list[position].name){
+            "hz" -> ITEM_TEXT
+            "picture"-> ITEM_PICTURE
+            "selector" -> ITEM_SELECTOR
+            else -> -1
         }
     }
 
@@ -99,6 +100,11 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class SelectorViewHolder(itemView:View): RecyclerView.ViewHolder(itemView){
 
         fun bind(element:Element){
+            if(itemView.radioGroup.childCount>0){
+                itemView.radioGroup.removeAllViewsInLayout()
+                itemView.radioGroup.setOnCheckedChangeListener { _, _ ->}
+                itemView.radioGroup.clearCheck()
+            }
 
             for (radioItem in element.data.variants!!){
                 val rad = RadioButton(itemView.context)

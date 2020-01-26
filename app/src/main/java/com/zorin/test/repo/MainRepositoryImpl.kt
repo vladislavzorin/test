@@ -13,7 +13,7 @@ class MainRepositoryImpl(var appApi: AppApi):MainRepository {
         return appApi.getData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen{ob -> ob.take(3).delay(15, TimeUnit.SECONDS)}
+                //.retryWhen{ob -> ob.take(1).delay(15, TimeUnit.SECONDS)}
 
     }
 }

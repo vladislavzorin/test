@@ -1,7 +1,5 @@
 package com.zorin.test.presenters
 
-
-import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.zorin.test.adapters.MainAdapter
@@ -28,12 +26,13 @@ class MainPresenter(var mainRepository: MainRepository,var adapter:MainAdapter):
     private fun processingResults(results: Response){
 
         for (view in results.view){
-            for (element in results.data){
-                if(view == element.name){
-                    listElements.add(element)
-                    break
+            if (view in listOf("hz","picture","selector"))
+                for (element in results.data){
+                    if(view == element.name){
+                        listElements.add(element)
+                        break
+                    }
                 }
-            }
         }
 
         adapter.setData(listElements)
@@ -41,5 +40,10 @@ class MainPresenter(var mainRepository: MainRepository,var adapter:MainAdapter):
 
     private fun processingError(){
         viewState.showError("Ошибка загрузки!")
+    }
+
+    fun updateQuery(){
+        adapter.deleteData()
+        requestToServer()
     }
 }
